@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="page">
+  <h3>请输入账号和密码</h3>
+  {% if error %}
+    <p class="text-danger"><strong>Error:</strong> {{ error }}</p>
+  {% endif %}
+  <form action="" method=post>
+    <dl>
+      <dt>账号
+      <dd><input type=text name=username value="{{
+          request.form.username }}">
+      <dt>密码
+      <dd><input type=password name=password>
+    </dl>
+    <p><input type=submit value=Login>
+  </form>
+
+</div>
+{% endblock %}
