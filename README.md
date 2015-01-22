@@ -25,6 +25,7 @@ http://monitor.wallstreetcn.com/index
 
 **markets_monitor_data**
 此文件夹是基于数据维度的监控程序
+建议部署到海外服务器
 
 将第三方数据源与本站最新价进行对比，并设置允许的误差范围，超过范围则报警
 (尚未完全完成)
