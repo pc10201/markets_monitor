@@ -27,7 +27,7 @@ conn = MySQLdb.connect(
     port=MYSQL_PORT,
     cursorclass=MySQLdb.cursors.DictCursor
 )
-conn.autocommit = True
+conn.autocommit(True)
 conn.ping(True)
 cur =conn.cursor()
 
