@@ -13,23 +13,29 @@ pip install flask MySQL-python gevent
 
 所有监控在周末和每天凌晨0点到8点总是输出正常的状态，即此时的监控是停止的
 
-**markets_monitor_time**
+##markets_monitor_time
 
 此文件夹是基于时间维度的监控程序
 
 http://monitor.wallstreetcn.com/forex
+
 此URL反映的是货币对的状态，默认是如果80%以上的资产更新时间在5分钟内则认为是正常的
 
 http://monitor.wallstreetcn.com/index
+
 此URL反映的是指数的状态，默认是如果20%以上的资产更新时间在30分钟内则认为是正常的
 因为各国指数开收盘时间不一致，另外部分国家数据有延迟，所以此值设置得宽松一些
 
-**markets_monitor_data**
+##markets_monitor_data
+
 先将ax_config.sql导入数据库中
+
 此文件夹是基于数据维度的监控程序
+
 建议部署到海外服务器
 
 将第三方数据源与本站最新价进行对比，并设置允许的误差范围，超过范围则报警
+
 参照来源及允许误差范围在ax_config表中
 
 ##linux下的连接数优化
