@@ -4,18 +4,29 @@
 from base import *
 import time
 
-#非重要数据的外汇指数重要性是3
+# 非重要数据的外汇指数重要性是3
 
-cur.execute("select * from ax_config WHERE importance=3 and `type`='forex' and diff_url!='' ")
+cur.execute("select * from ax_config WHERE importance=3 and diff_url!='' ")
 
-data=cur.fetchall()
+data = cur.fetchall()
 
-#while 1:
-for i in xrange(1):
+while 1:
+# for i in xrange(1):
     for item in data:
-        diff_price=get_data(item['diff_url'])
-        site_url='http://api.markets.wallstreetcn.com/v1/price.json?symbol=%s' %item['symbol']
-        get_data(site_url)
-        ctime=int(time.time())
-        if diff_price:
-            cur.execute("update ax_config set diff_price =%s,ctime=%s WHERE id=%s",(diff_price,ctime,item['id']))
+        diff_url = item['diff_url']
+        diff_allow = item['diff_allow']
+        site_url = 'http://api.markets.wallstreetcn.com/v1/price.json?symbol=%s' % item['symbol']
+
+        try:
+            diff_price = get_data(diff_url)
+            site_price, site_ctime = get_wallstreetcn(site_url)
+            ctime = int(time.time())
+            if diff_price and site_price:
+                if abs(diff_price - site_price) > diff_allow:
+                    cur.execute("insert into log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s", (item['symbol'], diff_price, site_price, ctime, site_ctime))
+                    cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=1 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))
+                else:
+                    cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=0 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))
+        except Exception as e:
+            app_log.error(str(e))
+            continue

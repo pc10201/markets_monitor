@@ -112,7 +112,7 @@ def get_wallstreetcn(url):
         site_ctime = json_data['results'][0]['ctime']
     except Exception as e:
         app_log.error(str(e))
-    return (last_price, site_ctime)
+    return last_price, site_ctime
 
 
 def get_gtimg(url):

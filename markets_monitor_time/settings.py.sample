@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+try:
+    from settings_default import *
+except ImportError, e:
+    pass
+
 MYSQL_HOST = '127.0.0.1'
 MYSQL_DBNAME = 'bhfxquote'
 MYSQL_USER = 'root'

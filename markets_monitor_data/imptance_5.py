@@ -3,33 +3,28 @@
 # Created  on 2015/1/14
 from base import *
 import time
-import math
 
 cur.execute("select * from ax_config WHERE importance=5 and diff_url!='' ")
 
-data=cur.fetchall()
+data = cur.fetchall()
 
-#while 1:
-for i in xrange(1):
+while 1:
+# for i in xrange(1):
     for item in data:
-        diff_url=item['diff_url']
-        #pow_format=item['pow_format']
-        diff_allow=item['diff_allow']
-        site_url='http://api.markets.wallstreetcn.com/v1/price.json?symbol=%s' %item['symbol']
+        diff_url = item['diff_url']
+        diff_allow = item['diff_allow']
+        site_url = 'http://api.markets.wallstreetcn.com/v1/price.json?symbol=%s' % item['symbol']
 
         try:
-            diff_price=get_data(diff_url)
-            site_price,site_ctime=get_wallstreetcn(site_url)
-            ctime=int(time.time())
+            diff_price = get_data(diff_url)
+            site_price, site_ctime = get_wallstreetcn(site_url)
+            ctime = int(time.time())
             if diff_price and site_price:
-                print diff_allow
-                #print item['symbol'],diff_price,site_price,pow_format,diff_allow
-                #print u'允许误差',diff_allow*1.0/math.pow(10,pow_format)
-                continue
-                if abs(diff_price-site_price)*math.pow(10,pow_format)>diff_allow:
-                    cur.execute("insert into log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s",(item['symbol'],diff_price,site_price,ctime,site_ctime))
-                    cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=1 WHERE id=%s",(diff_price,site_price,ctime,site_ctime,item['id']))
+                if abs(diff_price - site_price) > diff_allow:
+                    cur.execute("insert into log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s", (item['symbol'], diff_price, site_price, ctime, site_ctime))
+                    cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=1 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))
                 else:
-                    cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=0 WHERE id=%s",(diff_price,site_price,ctime,site_ctime,item['id']))
+                    cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=0 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))
         except Exception as e:
             app_log.error(str(e))
+            continue

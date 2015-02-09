@@ -6,7 +6,7 @@ pip install flask MySQL-python gevent
 
 直接运行python gevent_web.py即可
 
-将settings_default.py重命名为settings.py
+将settings.py.sample重命名为settings.py
 此文件保存了数据库和账号密码等配置信息
 
 运行python gevent_web.py即可
@@ -14,6 +14,7 @@ pip install flask MySQL-python gevent
 所有监控在周末和每天凌晨0点到8点总是输出正常的状态，即此时的监控是停止的
 
 **markets_monitor_time**
+
 此文件夹是基于时间维度的监控程序
 
 http://monitor.wallstreetcn.com/forex
@@ -24,11 +25,12 @@ http://monitor.wallstreetcn.com/index
 因为各国指数开收盘时间不一致，另外部分国家数据有延迟，所以此值设置得宽松一些
 
 **markets_monitor_data**
+先将ax_config.sql导入数据库中
 此文件夹是基于数据维度的监控程序
 建议部署到海外服务器
 
 将第三方数据源与本站最新价进行对比，并设置允许的误差范围，超过范围则报警
-(尚未完全完成)
+参照来源及允许误差范围在ax_config表中
 
 ##linux下的连接数优化
 
