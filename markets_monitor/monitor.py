@@ -135,16 +135,6 @@ def proxy():
 
 @app.route('/data', methods=['GET'])
 def data():
-    forex_status = u'获取最新状态失败，请手动点击链接进入'
-    index_status = u'获取最新状态失败，请手动点击链接进入'
-    try:
-        r = requests.get('http://monitor.wallstreetcn.com/forex', timeout=2)
-        forex_status = status_re.search(unicode(r.content, 'utf-8')).group(1)
-        r = requests.get('http://monitor.wallstreetcn.com/index', timeout=2)
-        index_status = status_re.search(unicode(r.content, 'utf-8')).group(1)
-    except Exception as e:
-        pass
-
     cur = g.db.cursor()
 
     cur.execute("select * from ax_config WHERE status='active' ORDER BY diff_status DESC ,importance DESC ")
@@ -207,7 +197,7 @@ def data():
             diff_allow=row['diff_allow'],
             spider_name=row['spider_name']
         ))
-    return render_template('data.html', item_list=item_list, forex_status=forex_status, index_status=index_status)
+    return render_template('data.html', item_list=item_list)
 
 
 @app.route('/log', methods=['GET'])
