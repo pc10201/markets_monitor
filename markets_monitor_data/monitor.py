@@ -9,11 +9,6 @@ import re
 import requests
 
 app = Flask(__name__)
-'''
-app.config.from_object(__name__)
-app.debug = True
-app.secret_key = 'my project'
-'''
 
 status_re = re.compile(ur'<b>(.*?)</b')
 name_re = re.compile(ur'\.(.*?)\.(com|cn)')
@@ -52,17 +47,7 @@ def index():
         pass
 
     cur = g.db.cursor()
-    ctime_diff = int(time.time()) - diff_seconds
-    cur.execute("select symbol,count(id) as `count` from log WHERE ctime>%s GROUP BY symbol", (ctime_diff,))
-    data = cur.fetchall()
 
-    status = u'总的状态:All Good!'
-
-    for item in data:
-        if item['count'] > 3:
-            status = u'总的状态:Bad!'
-            continue
-    ctime_diff = 0
     cur.execute("select * from ax_config WHERE status='active' ORDER BY diff_status DESC ,importance DESC ")
     data = cur.fetchall()
     item_list = []
@@ -123,7 +108,7 @@ def index():
             diff_allow=row['diff_allow'],
             spider_name=row['spider_name']
         ))
-    return render_template('index.html', item_list=item_list, status=status, forex_status=forex_status, index_status=index_status)
+    return render_template('index.html', item_list=item_list, forex_status=forex_status, index_status=index_status)
 
 
 @app.route('/log', methods=['GET'])
@@ -135,7 +120,7 @@ def log():
     for row in data:
         tr_class = 'danger'
 
-        item_list.append(dict(symbol=row['symbol'], record=row['record'], tr_class=tr_class, ctime=arrow.get(str(row['ctime']), 'X').format('YYYY-MM-DD HH:mm:ss')))
+        item_list.append(dict(symbol=row['symbol'], record=row['record'], tr_class=tr_class, ctime=arrow.get(str(row['ctime']), 'X').replace(hours=8).format('YYYY-MM-DD HH:mm:ss')))
     return render_template('log.html', item_list=item_list)
 
 

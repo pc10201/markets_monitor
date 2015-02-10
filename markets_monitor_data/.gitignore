@@ -6,6 +6,7 @@
 *.xml
 last_send.txt
 settings.py
+investing.py
 
 # Packages
 *.egg

@@ -21,7 +21,8 @@ while 1:
             ctime = int(time.time())
             if diff_price and site_price:
                 if abs(diff_price - site_price) > diff_allow:
-                    cur.execute("insert into log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s", (item['symbol'], diff_price, site_price, ctime, site_ctime))
+                    record = u'主站数据:%f，参照数据%f' % (site_price, diff_price)
+                    cur.execute("insert into log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,record=%s", (item['symbol'], diff_price, site_price, ctime, site_ctime, record))
                     cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=1 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))
                 else:
                     cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=0 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))

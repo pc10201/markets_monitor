@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<p><b>最后100条的日志</b></p>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+<th>资产代号</th>
+ <th>创建时间</th>
+<th>错误记录</th>
+            </tr>
+</thead>
+            <tbody>
+{% for item in item_list %}
+<tr class="{{ item.tr_class}}">
+        <td>{{ item.symbol}}</td>
+         <td >{{ item.ctime}}</td>
+    <td>{{item.record}}</td>
+</tr>
+{% endfor %}
+
+            </tbody>
+</table>
+
+{% endblock %}

@@ -4,14 +4,12 @@
 from base import *
 import time
 
-# 非重要数据的外汇指数重要性是3
-
-cur.execute("select * from ax_config WHERE importance=3 and diff_url!='' ")
+cur.execute("select * from ax_config WHERE importance=5 and diff_url!='' ")
 
 data = cur.fetchall()
 
 while 1:
-    # for i in xrange(1):
+# for i in xrange(1):
     for item in data:
         diff_url = item['diff_url']
         diff_allow = item['diff_allow']
@@ -24,7 +22,7 @@ while 1:
             if diff_price and site_price:
                 if abs(diff_price - site_price) > diff_allow:
                     record = u'主站数据:%f，参照数据%f' % (site_price, diff_price)
-                    cur.execute("insert into log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,record=%s", (item['symbol'], diff_price, site_price, ctime, site_ctime, record))
+                    cur.execute("insert into ax_crawl_log set symbol=%s,diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,record=%s", (item['symbol'], diff_price, site_price, ctime, site_ctime, record))
                     cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=1 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))
                 else:
                     cur.execute("update ax_config set diff_price=%s,site_price=%s,ctime=%s,site_ctime=%s,diff_status=0 WHERE id=%s", (diff_price, site_price, ctime, site_ctime, item['id']))

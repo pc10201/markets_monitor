@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+
+try:
+    from settings_default import *
+except ImportError, e:
+    pass
+
+MYSQL_HOST = ''
+MYSQL_DBNAME = ''
+MYSQL_USER = ''
+MYSQL_PASSWD = ''
+MYSQL_PORT = 3306
