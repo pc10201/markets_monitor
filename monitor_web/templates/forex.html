@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<p><b>外汇资产状态一览 ——{{status}}</b></p>
+<br><p>绿色背景表示资产正常，黄色表示可疑状态(比如最后更新时间大于允许时间)，红色表示报警状态</p><br>
+
+<div class="table-responsive">
+        <table class="table table-bordered" >
+            <thead>
+            <tr>
+<th>资产名称</th>
+<th>现价来源</th>
+<th>开收盘价来源</th>
+<th>主站最后时间</th>
+<th>蜘蛛名称</th>
+            </tr>
+</thead>
+            <tbody>
+{% for item in item_list %}
+<tr class="{{item.tr_class}}">
+        <td ><a href=" {{ item.show_url}}" target="_blank">{{ item.title}}</a> </td>
+
+    <td >
+     {% if 'http://' in item.price_source %}
+        <a href=" {{ item.price_source}}"  target="_blank">{{ item.price_source_name}}</a>
+    {% else %}
+        {{ item.price_source_name}}
+    {% endif %}
+
+        </td>
+
+    <td >
+    {% if 'http://' in item.open_close_source %}
+        <a href=" {{ item.open_close_source}}"  target="_blank">{{ item.open_close_source_name}}</a>
+    {% else %}
+        {{item.open_close_source_name}}
+    {% endif %}
+
+    </td>
+    <td>{{item.ctime}}</td>
+    <td>{{item.spider_name}}</td>
+
+</tr>
+{% endfor %}
+
+
+</tbody>
+</table>
+</div>
+{% endblock %}

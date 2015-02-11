@@ -1,7 +1,7 @@
 #部署手册
 
 ```
-pip install flask MySQL-python gevent
+pip install -r requirements.txt
 ```
 
 直接运行python gevent_web.py即可
@@ -13,9 +13,9 @@ pip install flask MySQL-python gevent
 
 所有监控在周末和每天凌晨0点到8点总是输出正常的状态，即此时的监控是停止的
 
-##markets_monitor_time
+##monitor_web
 
-此文件夹是基于时间维度的监控程序
+此文件夹是时间维度和数据维度的web展示页面
 
 http://monitor.wallstreetcn.com/forex
 
@@ -26,13 +26,9 @@ http://monitor.wallstreetcn.com/index
 此URL反映的是指数的状态，默认是如果20%以上的资产更新时间在30分钟内则认为是正常的
 因为各国指数开收盘时间不一致，另外部分国家数据有延迟，所以此值设置得宽松一些
 
-##markets_monitor_data
+http://monitor.wallstreetcn.com/data
 
 先将ax_config.sql导入数据库中
-
-此文件夹是基于数据维度的监控程序
-
-建议部署到海外服务器
 
 将第三方数据源与本站最新价进行对比，并设置允许的误差百分比，0.01即代表1%，超过范围则报警
 
@@ -42,11 +38,19 @@ http://monitor.wallstreetcn.com/index
 
 参照来源及允许误差范围在ax_config表中
 
-错误日志存在ax_crawl_log表中
+错误日志存在ax_monitor_log表中
+
+##monitor_crawl
+
+此文件夹是基于数据维度监控的爬虫程序
+
+建议部署到海外服务器
+
+imptance_3.py:抓取重要级别为3的资产
 
 imptance_5.py:抓取重要级别为5的资产
 
-imptance_3.py:抓取重要级别为3的资产
+monitor_test.py:生成测试数据
 
 ##linux下的连接数优化
 

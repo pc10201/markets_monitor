@@ -2,23 +2,24 @@
 {% block content %}
 
 
-<p><b>各国指数状态一览 —— {{status}}</b></p>
-<br><p>绿色背景表示资产正常，黄色表示可疑状态(比如最后更新时间大于允许时间)，红色表示报警状态</p><br>
+<p><b>最后100条的日志</b></p>
 
         <table class="table table-bordered">
             <thead>
             <tr>
 <th>资产代号</th>
-<th>资产名称</th>
- <th>最后更新时间</th>
+ <th>创建时间</th>
+<th>错误记录</th>
+ <th>数据来源</th>
             </tr>
 </thead>
             <tbody>
 {% for item in item_list %}
 <tr class="{{ item.tr_class}}">
         <td>{{ item.symbol}}</td>
-            <td>{{item.subTitle}}</td>
          <td >{{ item.ctime}}</td>
+    <td>{{item.record}}</td>
+<td>{{item.source}}</td>
 </tr>
 {% endfor %}
 
